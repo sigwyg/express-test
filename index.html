@@ -52,13 +52,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error('Error:', error);
             });
     })
+
+    var btnSend = document.getElementById('js-submit')
+    btnSend.addEventListener('click', () => {
+        var testForm = document.getElementById('testForm')
+        testForm.submit()
+    })
+
 })
 
 </script>
 </head>
 <body>
-<form action="/auth" method="post">
+<form action="/auth" method="post" id="testForm">
     <input type="submit">
+    <button type="button" id="js-submit">form.submit()</button>
 </form>
 <p>
     <button type="button" id="js-xhr">XHR send</button>
