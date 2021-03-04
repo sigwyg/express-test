@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         xhr.onreadystatechange = function() { // 状態が変化すると関数が呼び出されます。
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 console.log('success')
+                console.log('url', this.responseURL)
             } else {
                 console.log('error')
             }
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => {
                 if(response.ok) {
                     console.log('ok', response.status)
+                    console.log('url', response.url)
                     return response.json()
                 } else if ( response.status === 302 ) {
                     console.log('302')
