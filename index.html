@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POST to redirect</title>
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    var btnXhr = document.getElementById('js-xhr')
+    btnXhr.addEventListener('click', () => {
+        console.log('xhr click')
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/auth', true)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() { // 状態が変化すると関数が呼び出されます。
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                console.log('success')
+            } else {
+                console.log('error')
+            }
+        }
+        xhr.send("foo=bar&lorem=ipsum");
+    })
+
+    var btnFetch = document.getElementById('js-fetch')
+    btnFetch.addEventListener('click', () => {
+        console.log('fetch click')
+        const data = { username: 'example' };
+        fetch('/auth', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            redirect: 'follow', // manual, *follow, error
+            body: JSON.stringify(data),
+        })
+            .then(response => {
+                if(response.ok) {
+                    console.log('ok', response.status)
+                    return response.json()
+                } else if ( response.status === 302 ) {
+                    console.log('302')
+                } else {
+                    console.log('other')
+                }
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    })
+})
+
+</script>
+</head>
+<body>
+<form action="/auth" method="post">
+    <input type="submit">
+</form>
+<p>
+    <button type="button" id="js-xhr">XHR send</button>
+</p>
+<p>
+    <button type="button" id="js-fetch">Fetch send</button>
+</p>
+</body>
+</html>
